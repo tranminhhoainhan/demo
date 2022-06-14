@@ -1,5 +1,5 @@
 # demo
-This is a demo which has been developed in short time to demostrate
+This is a demo which has been developed in short time to demonstrate
  + Spin up mongodb using docker (run setup/setup.bat)
  + Feed date from expored bson files 
    - Install mongoimport
