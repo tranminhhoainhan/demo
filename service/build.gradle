@@ -1,0 +1,119 @@
+plugins {
+	id 'org.springframework.boot' version '2.6.7'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+	id 'org.springframework.experimental.aot' version '0.11.4'
+	id 'org.hibernate.orm'
+	id "org.openapi.generator" version "6.0.0"
+	
+}
+
+group = 'com.cybermax.samples'
+version = '0.0.1'
+sourceCompatibility = '11'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	maven { url 'https://repo.spring.io/snapshot' }
+	maven { url 'https://repo.spring.io/release' }
+	maven { url 'https://repo.spring.io/milestone' }
+	
+	mavenCentral()	
+}
+
+ext {
+	set('springCloudVersion', "2021.0.3-SNAPSHOT")
+}
+
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+	implementation 'org.springframework.boot:spring-boot-starter-integration'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	
+	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+	
+	implementation 'org.springdoc:springdoc-openapi-ui:1.6.7'
+	implementation 'org.springdoc:springdoc-openapi-data-rest:1.6.7'
+	implementation 'org.springdoc:springdoc-openapi-webflux-ui:1.6.7'
+	implementation 'org.springdoc:springdoc-openapi-native:1.6.7'
+
+	
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'	
+	implementation 'org.apache.kafka:kafka-streams'
+	implementation 'org.liquibase:liquibase-core'
+	implementation 'org.springframework.cloud:spring-cloud-stream'
+	implementation 'org.springframework.integration:spring-integration-http'
+	implementation 'org.springframework.integration:spring-integration-jpa'
+	implementation 'org.springframework.integration:spring-integration-stomp'
+	implementation 'org.springframework.integration:spring-integration-webflux'
+	implementation 'javax.inject:javax.inject:1'
+	implementation 'org.openapitools:jackson-databind-nullable:0.2.2'
+	implementation 'org.apache.commons:commons-lang3:3.12.0'
+	
+	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'com.h2database:h2'
+	runtimeOnly 'io.r2dbc:r2dbc-h2'
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'io.projectreactor:reactor-test'
+	testImplementation 'org.springframework.integration:spring-integration-test'
+	testImplementation 'org.springframework.kafka:spring-kafka-test'
+	testImplementation 'org.springframework.security:spring-security-test'
+}
+
+openApiValidate {
+    inputSpec = "$rootDir/src/main/resources/specifications/openapi.yml".toString()
+}
+
+openApiGenerate {
+    generatorName = "spring"
+    inputSpec = "$rootDir/src/main/resources/specifications/openapi.yml".toString()    
+    outputDir = "$buildDir/generated-openapi".toString()
+    apiPackage = "com.cybermax.samples.spring_native_service.api"
+    modelPackage = "com.cybermax.samples.spring_native_service.api.model"
+    configOptions = [
+        dateLibrary: "java11",
+        useTags : "true",
+        interfaceOnly: "true"        
+    ]
+}
+
+sourceSets  {
+    main {
+        java {
+            srcDir(files("${openApiGenerate.outputDir.get()}/src/main/java"))
+        }
+    }
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+tasks.named('bootBuildImage') {
+	dependsOn = ['openApiGenerate']
+	builder = 'paketobuildpacks/builder:tiny'
+	environment = ['BP_NATIVE_IMAGE': 'true',
+	               'BP_NATIVE_IMAGE_BUILD_ARGUMENTS':' -J-Xmx7g -H:-DeadlockWatchdogExitOnTimeout -H:DeadlockWatchdogInterval=0']
+}
+

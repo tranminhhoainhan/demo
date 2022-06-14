@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+  <changeSet author="toanstt" id="tag-1.0.0-start">
+    <tagDatabase tag="1.0.0-start"/>
+  </changeSet>
+  <changeSet author="toanstt" id="1.0.0-init" runOnChange="true">
+    <preConditions onFail="MARK_RAN">
+      <not>
+        <tableExists tableName="Jobs" schemaName="dbo"></tableExists>
+      </not>
+    </preConditions>
+    <sqlFile encoding="UTF-8" path="region.sql" relativeToChangelogFile="true" splitStatements="true" endDelimiter="\nGO"/>
+    <sqlFile encoding="UTF-8" path="countries.sql" relativeToChangelogFile="true" splitStatements="true" endDelimiter="\nGO"/>
+    <sqlFile encoding="UTF-8" path="branches.sql" relativeToChangelogFile="true" splitStatements="true" endDelimiter="\nGO"/>
+    <sqlFile encoding="UTF-8" path="group_cedants.sql" relativeToChangelogFile="true" splitStatements="true" endDelimiter="\nGO"/>
+    
+  </changeSet>
+  <changeSet author="toanstt" id="tag-1.0.0-end">
+    <tagDatabase tag="1.0.0-end"/>
+  </changeSet>
+</databaseChangeLog>

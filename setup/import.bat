@@ -1,0 +1,1 @@
+mongoimport --uri mongodb://127.0.0.1:27017/test --collection %1 --type json --jsonArray --file %1.json

@@ -1,0 +1,131 @@
+openapi: 3.0.2
+info:
+  title: Demo
+  description: "Demo rest api"
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: toanstt@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 0.0.1-SNAPSHOT
+externalDocs:
+  description: Find out more about me
+  url: https://www.linkedin.com/in/toanstt
+servers:
+- url: https://localhost:8080
+tags:
+- name: rec-risk
+  description: Operations about REC Risk
+  externalDocs:
+    description: REC risk operations
+    url: http://swagger.io
+paths:
+  /api/v1/rec-risk:
+    get:
+      tags:
+      - rec_risk
+      summary: Get rec risk
+      description: Get rec risk
+      parameters: 
+        - in: query
+          name: zone
+          schema:
+            type: string
+          description: Specify zone
+        - in: query
+          name: country
+          schema:
+            type: string
+          description: Specify country
+        - in: query
+          name: group
+          schema:
+            type: string
+          description: Specify company type
+        - in: query
+          name: company_type
+          schema:
+            type: string
+            enum: [LIFE, NOT LIFE]
+
+        - in: query
+          name: cedant
+          schema:
+            type: string
+          description: Specify cedant
+        - in: query
+          name: validation_status
+          schema:
+            type: string
+            enum: [All, Approved, Rejected,Pending,Partially Validated]
+          description: Specify validation status  
+        - in: query
+          name: confirmation_status
+          schema:
+            type: string
+            enum: [All, Pending,Slip Confirmed]
+          description: Specify confirmation status
+        - in: query
+          name: published_date
+          schema:
+            type: string
+            format: date
+          description: Specify published date
+        - in: query
+          name: edited_period
+          schema:
+            type: string
+            format: date
+          description: Specify edited period
+        - in: query
+          name: main_branch
+          schema:
+            type: string
+          description: Specify main branch
+        - in: query
+          name: date_cutoff
+          schema:
+            type: string
+            format: date
+          description: Specify date cut off
+        - in: query
+          name: method
+          schema:
+            type: string
+          description: Specify method     
+      responses:
+        '200':
+          description: A list of data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecRiskList'
+components:
+  schemas:
+    RecRiskList:
+      type: array
+      items:
+        oneOf:
+          - $ref: '#/components/schemas/RecRiskData'
+    RecRiskData:
+      type: object
+      properties:
+        reference:
+          type: string
+        country:
+          type: string
+        cedant:
+          type: string
+        validation_status:
+          type: string
+        confirmation_status:
+          type: string
+        published_date:
+          type: string
+        brache:
+          type: string
+        calculated_rec:
+          type: double
+          description: calculated status
+          format: int64

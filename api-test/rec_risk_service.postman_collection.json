@@ -1,0 +1,95 @@
+{
+	"info": {
+		"_postman_id": "1e2accfa-3890-4aa0-a58f-5ff2c33bd115",
+		"name": "rec_risk_service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40969"
+	},
+	"item": [
+		{
+			"name": "rec-risk.get",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/rec-risk?zone=CIMA%20AFRIQUE%20OCCIDENTALE&country=COTE%20D'IVOIRE&group=1&company_type=NOT%20LIFE&cedant=HYPER%20NON%20VIE%20ASSURANCE&validation_status=Verified&confirmation_status=Confirmed&main_branch=Automobile&method=1&date_cutoff=2020-02-05&published_date=2020-10-26&edited_period=2020-01-26",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"rec-risk"
+					],
+					"query": [
+						{
+							"key": "zone",
+							"value": "CIMA%20AFRIQUE%20OCCIDENTALE"
+						},
+						{
+							"key": "country",
+							"value": "COTE%20D'IVOIRE"
+						},
+						{
+							"key": "group",
+							"value": "1"
+						},
+						{
+							"key": "company_type",
+							"value": "NOT%20LIFE"
+						},
+						{
+							"key": "cedant",
+							"value": "HYPER%20NON%20VIE%20ASSURANCE"
+						},
+						{
+							"key": "validation_status",
+							"value": "Verified"
+						},
+						{
+							"key": "confirmation_status",
+							"value": "Confirmed"
+						},
+						{
+							"key": "main_branch",
+							"value": "Automobile"
+						},
+						{
+							"key": "method",
+							"value": "1"
+						},
+						{
+							"key": "date_cutoff",
+							"value": "2020-02-05"
+						},
+						{
+							"key": "published_date",
+							"value": "2020-10-26"
+						},
+						{
+							"key": "edited_period",
+							"value": "2020-01-26"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
