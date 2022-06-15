@@ -79,7 +79,7 @@ openApiValidate {
     inputSpec = "$rootDir/src/main/resources/specifications/openapi.yml".toString()
 }
 
-openApiGenerate {
+task buildOpenApiCode(type: org.openapitools.generator.gradle.plugin.tasks.GenerateTask) {
     generatorName = "spring"
     inputSpec = "$rootDir/src/main/resources/specifications/openapi.yml".toString()    
     outputDir = "$buildDir/generated-openapi".toString()
@@ -91,6 +91,8 @@ openApiGenerate {
         interfaceOnly: "true"        
     ]
 }
+
+compileJava.dependsOn buildOpenApiCode
 
 sourceSets  {
     main {
@@ -111,7 +113,6 @@ tasks.named('test') {
 }
 
 tasks.named('bootBuildImage') {
-	dependsOn = ['openApiGenerate']
 	builder = 'paketobuildpacks/builder:tiny'
 	environment = ['BP_NATIVE_IMAGE': 'true',
 	               'BP_NATIVE_IMAGE_BUILD_ARGUMENTS':' -J-Xmx7g -H:-DeadlockWatchdogExitOnTimeout -H:DeadlockWatchdogInterval=0']
