@@ -75,8 +75,29 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 }
 
+sourceSets  {
+    main {
+        java {
+            srcDir(files("${openApiGenerate.outputDir.get()}/src/main/java"))
+        }
+    }
+}
+
 openApiValidate {
     inputSpec = "$rootDir/src/main/resources/specifications/openapi.yml".toString()
+}
+
+openApiGenerate {
+    generatorName = "spring"
+    inputSpec = "$rootDir/src/main/resources/specifications/openapi.yml".toString()    
+    outputDir = "$buildDir/generated-openapi".toString()
+    apiPackage = "com.cybermax.samples.spring_native_service.api"
+    modelPackage = "com.cybermax.samples.spring_native_service.api.model"
+    configOptions = [
+        dateLibrary: "java11",
+        useTags : "true",
+        interfaceOnly: "true"        
+    ]
 }
 
 task buildOpenApiCode(type: org.openapitools.generator.gradle.plugin.tasks.GenerateTask) {
@@ -94,13 +115,7 @@ task buildOpenApiCode(type: org.openapitools.generator.gradle.plugin.tasks.Gener
 
 compileJava.dependsOn buildOpenApiCode
 
-sourceSets  {
-    main {
-        java {
-            srcDir(files("${openApiGenerate.outputDir.get()}/src/main/java"))
-        }
-    }
-}
+
 
 dependencyManagement {
 	imports {
