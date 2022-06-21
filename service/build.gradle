@@ -18,6 +18,8 @@ configurations {
 	}
 }
 
+def  openApiOutputDir = "$buildDir/generated-openapi".toString()
+
 repositories {
 	maven { url 'https://repo.spring.io/snapshot' }
 	maven { url 'https://repo.spring.io/release' }
@@ -78,7 +80,7 @@ dependencies {
 sourceSets  {
     main {
         java {
-            srcDir(files("${openApiGenerate.outputDir.get()}/src/main/java"))
+            srcDir(files("${openApiOutputDir}/src/main/java"))
         }
     }
 }
@@ -87,23 +89,11 @@ openApiValidate {
     inputSpec = "$rootDir/src/main/resources/specifications/openapi.yml".toString()
 }
 
-openApiGenerate {
-    generatorName = "spring"
-    inputSpec = "$rootDir/src/main/resources/specifications/openapi.yml".toString()    
-    outputDir = "$buildDir/generated-openapi".toString()
-    apiPackage = "com.cybermax.samples.spring_native_service.api"
-    modelPackage = "com.cybermax.samples.spring_native_service.api.model"
-    configOptions = [
-        dateLibrary: "java11",
-        useTags : "true",
-        interfaceOnly: "true"        
-    ]
-}
 
 task buildOpenApiCode(type: org.openapitools.generator.gradle.plugin.tasks.GenerateTask) {
     generatorName = "spring"
     inputSpec = "$rootDir/src/main/resources/specifications/openapi.yml".toString()    
-    outputDir = "$buildDir/generated-openapi".toString()
+    outputDir = "$openApiOutputDir"
     apiPackage = "com.cybermax.samples.spring_native_service.api"
     modelPackage = "com.cybermax.samples.spring_native_service.api.model"
     configOptions = [
@@ -114,8 +104,6 @@ task buildOpenApiCode(type: org.openapitools.generator.gradle.plugin.tasks.Gener
 }
 
 compileJava.dependsOn buildOpenApiCode
-
-
 
 dependencyManagement {
 	imports {
