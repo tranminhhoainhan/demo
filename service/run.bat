@@ -1,1 +1,1 @@
-docker run -p 8080:8080 docker.io/library/demo:0.0.1
+gradle bootRun --args='--spring.profiles.active=local' --args='--spring.profiles.active=local'

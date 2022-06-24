@@ -117,7 +117,7 @@ tasks.named('test') {
 
 tasks.named('bootBuildImage') {
 	builder = 'paketobuildpacks/builder:tiny'
-	environment = ['BP_NATIVE_IMAGE': 'true',
+	environment = ['BP_NATIVE_IMAGE': 'false',
 	               'BP_NATIVE_IMAGE_BUILD_ARGUMENTS':' -J-Xmx7g -H:-DeadlockWatchdogExitOnTimeout -H:DeadlockWatchdogInterval=0']
 }
 

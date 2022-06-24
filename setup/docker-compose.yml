@@ -1,0 +1,24 @@
+version: "3.7"
+services:        
+  mongo_db:
+    image: mongo:latest
+    container_name: mongodb
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_DATABASE: test
+  mongo-seed:
+    build: ./mongo-seed
+    depends_on:
+      - mongo_db        
+  api_service:
+    image: docker.io/library/demo:0.0.1
+    restart: always
+    ports:
+      - 8080:8080
+    environment:
+      - MONGO_HOST=mongodb
+    depends_on:
+      mongo-seed:
+        condition: service_completed_successfully      
