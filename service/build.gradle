@@ -6,6 +6,9 @@ plugins {
 	id 'org.hibernate.orm'
 	id "org.openapi.generator" version "6.0.0"
     id 'checkstyle'		
+    id 'pmd'
+    id "com.github.spotbugs" version "5.0.9"
+        
 }
 
 group = 'com.cybermax.samples'
